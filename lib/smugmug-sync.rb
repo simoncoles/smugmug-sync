@@ -128,7 +128,7 @@ end
 def output_help
   puts "username, password, and destination are mandatory parameters"
   puts "e.g. "
-  puts "./smugmug_sync.rb --username YOUR_USERNAME --password YOUR_PASSWORD --hostname HOSTNAME --destination DIRECTORY"
+  puts "./smugmug_sync.rb --username YOUR_USERNAME --password YOUR_PASSWORD --destination DIRECTORY"
 end
 
 # =======================================================================================
@@ -143,7 +143,6 @@ opts.on('-h', '--help')         { output_help }
 opts.on('-V', '--verbose')      {$verbose = true }  
 opts.on('-u', '--username USERNAME')  { |u| $username = u }
 opts.on('-p', '--password PASSWORD')  { |p| $password = p }
-opts.on('-p', '--hostname HOSTNAME')  { |h| $hostname = h }
 opts.on('-p', '--destination DESTINATION')  { |d| $destination = d }
 opts.parse!
 
