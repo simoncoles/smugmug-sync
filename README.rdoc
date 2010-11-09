@@ -1,6 +1,30 @@
 = smugmug-sync
 
-Description goes here.
+This is just a simple script that takes a copy of everything that's in your SmugMug account and puts it into a directory on the local file system. If you run it again with the same parameters it won't download files it already has, so you can stop the download and restart as needed, or re-run it to get new photos you have uploaded to SmugMug.
+
+Note that this won't remove files which have been downloaded in a previous session which aren't in SmugMug any more (presumably because you deleted them).
+
+
+== Usage
+The following parameters are required:
+
+|username | Your SmugMug username |
+|password | Password for your SmugMug account |
+|destination | Directory you want your files to go to |
+
+@./download.rb --verbose --username prince --password charming --hostname my.photos.com --destination "My SmugMug"@
+
+
+== Status
+
+This has had minimal testing - it works for me :-). Happy to take bug reports, questions etc. but I can't claim to know what I am doing, this was just a weekend hack.
+
+This is a command line tool and I realise the audience is therefore restricted to those who can handle the Terminal and maybe a bit of Ruby. Which I feel bad about but I don't have the time to do anything else.
+
+
+== Motivation 
+
+I really like SmugMug, but I feel better having a copy of everything on a local disk too. SmugMug used to have a service which would email a DVD to you which was great, but that isn't currently available. You can download all the files for a particular album, but I just wanted something I could run and it would work.
 
 == Note on Patches/Pull Requests
  

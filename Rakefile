@@ -5,12 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "smugmug-sync"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
-    gem.email = "simonc@amphora-research.com"
-    gem.homepage = "http://github.com/simonc@amphora-research.com/smugmug-sync"
+    gem.summary = %Q{Download all your photos from SmugMug}
+    gem.description = %Q{Download all your photos from the SmugMug photo sharing site. If you run it again, it will only download files which have changed (according to the MD5 hash)}
+    gem.email = "simon@coles.to"
+    gem.homepage = "http://github.com/simoncoles/smugmug-sync"
     gem.authors = ["Simon Coles"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
+    gem.add_dependency "smirk", ">= 0"
+    gem.add_dependency "mechanize", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
   Jeweler::GemcutterTasks.new
