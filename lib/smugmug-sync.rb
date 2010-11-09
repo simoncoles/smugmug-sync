@@ -69,17 +69,17 @@ def sync_image_file(image, album_directory)
     f = $agent.get(url)
     f.save(image_filename)
 
-    # # Compute the md5 hash
-    # downloaded_hash_func = Digest::MD5.new
-    # downloaded_hash_func.update(image_data)
-    # downloaded_hash = downloaded_hash_func.hexdigest
-    # 
-    # # Check the hash is right
-    # if downloaded_hash == md5sum
-    #   puts "    Downloaded" if $verbose
-    # else
-    #   puts "Could not get correct md5sum from file downloaded from #{url}"
-    # end
+    # Compute the md5 hash
+    downloaded_hash_func = Digest::MD5.new
+    downloaded_hash_func.update(IO.read(image_filename))
+    downloaded_hash = downloaded_hash_func.hexdigest
+    
+    # Check the hash is right
+    if downloaded_hash == md5sum
+      puts "    Downloaded" if $verbose
+    else
+      puts "Could not get correct md5sum from file downloaded from #{url}"
+    end
   end
 end
 
