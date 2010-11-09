@@ -12,7 +12,7 @@ username:: Your SmugMug username
 password:: Password for your SmugMug account
 destination:: Directory you want your files to go to
 
-  ./download.rb --verbose --username prince --password charming --destination "My SmugMug"@
+  ./download.rb --verbose --username prince --password charming --destination "My SmugMug"
 
 
 == Status
