@@ -86,69 +86,70 @@ def sync_image_file(image, album_directory)
       puts "Error getting the image file #{url}"
     end
   end
+end
 
 
-  def sync_album(album, destination)
-    # check that base_path/category/title ecists
-    title = album.title
-    category = album.category[:name]
-    category_directory = "#{destination}/#{category}"
-    album_directory = "#{category_directory}/#{title}"
-    # Create the Directories if needed
-    Dir.mkdir(category_directory) if !File.exists?(category_directory)
-    Dir.mkdir(album_directory) if !File.exists?(album_directory)
+def sync_album(album, destination)
+  # check that base_path/category/title ecists
+  title = album.title
+  category = album.category[:name]
+  category_directory = "#{destination}/#{category}"
+  album_directory = "#{category_directory}/#{title}"
+  # Create the Directories if needed
+  Dir.mkdir(category_directory) if !File.exists?(category_directory)
+  Dir.mkdir(album_directory) if !File.exists?(album_directory)
 
-    puts "Working on Album [#{title}] in Category [#{category}]" if $verbose
+  puts "Working on Album [#{title}] in Category [#{category}]" if $verbose
 
-    # Now get all the images and process them
-    # Note we pass true in as the "heavy" parameter which gets the full object, rather than just the id and key
-    images = album.images(true)
-    images.each do |i|
-      sync_image_file(i, album_directory)
-    end
+  # Now get all the images and process them
+  # Note we pass true in as the "heavy" parameter which gets the full object, rather than just the id and key
+  images = album.images(true)
+  images.each do |i|
+    sync_image_file(i, album_directory)
   end
+end
 
 
-  def sync_with_smugmug
-    # Login with Mechanize to download photos
-    $agent = Mechanize.new
-    page = $agent.get 'https://secure.smugmug.com/login.mg'
-    form = page.forms[1]
-    form.username = $username
-    form.password = $password
-    page = $agent.submit form
-    # Now our agent is authenticated with SmugMug so we can get the photos with $agent
+def sync_with_smugmug
+  # Login with Mechanize to download photos
+  $agent = Mechanize.new
+  page = $agent.get 'https://secure.smugmug.com/login.mg'
+  form = page.forms[1]
+  form.username = $username
+  form.password = $password
+  page = $agent.submit form
+  # Now our agent is authenticated with SmugMug so we can get the photos with $agent
 
-    # Login with Smirk as an API
-    $smug = Smirk::Client.new($username, $password)
-    albums = $smug.albums
-    albums.each do |a|
-      sync_album(a, $destination)
-    end
-    $smug.logout
+  # Login with Smirk as an API
+  $smug = Smirk::Client.new($username, $password)
+  albums = $smug.albums
+  albums.each do |a|
+    sync_album(a, $destination)
   end
+  $smug.logout
+end
 
-  def output_help
-    puts "username, password, and destination are mandatory parameters"
-    puts "e.g. "
-    puts '      smugmug_sync --username "YOUR_USERNAME" --password "YOUR_PASSWORD" --destination "DIRECTORY"'
-  end
+def output_help
+  puts "username, password, and destination are mandatory parameters"
+  puts "e.g. "
+  puts '      smugmug_sync --username "YOUR_USERNAME" --password "YOUR_PASSWORD" --destination "DIRECTORY"'
+end
 
-  # =======================================================================================
-  # Process the command line and do something
-  # =======================================================================================
+# =======================================================================================
+# Process the command line and do something
+# =======================================================================================
 
-  $verbose = false
+$verbose = false
 
-  # This actually processes what we got on the command line
-  opts = OptionParser.new 
-  opts.on('-h', '--help')         { output_help }
-  opts.on('-V', '--verbose')      {$verbose = true }  
-  opts.on('-u', '--username USERNAME')  { |u| $username = u }
-  opts.on('-p', '--password PASSWORD')  { |p| $password = p }
-  opts.on('-p', '--destination DESTINATION')  { |d| $destination = d }
-  opts.parse!
+# This actually processes what we got on the command line
+opts = OptionParser.new 
+opts.on('-h', '--help')         { output_help }
+opts.on('-V', '--verbose')      {$verbose = true }  
+opts.on('-u', '--username USERNAME')  { |u| $username = u }
+opts.on('-p', '--password PASSWORD')  { |p| $password = p }
+opts.on('-p', '--destination DESTINATION')  { |d| $destination = d }
+opts.parse!
 
-  # Do the sync
-  sync_with_smugmug
+# Do the sync
+sync_with_smugmug
 
