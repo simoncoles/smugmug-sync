@@ -127,7 +127,7 @@ end
 def output_help
   puts "username, password, and destination are mandatory parameters"
   puts "e.g. "
-  puts "      smugmug_sync --username "YOUR_USERNAME" --password "YOUR_PASSWORD" --destination "DIRECTORY""
+  puts '      smugmug_sync --username "YOUR_USERNAME" --password "YOUR_PASSWORD" --destination "DIRECTORY"'
 end
 
 # =======================================================================================
