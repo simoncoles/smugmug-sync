@@ -113,8 +113,7 @@ def sync_with_smugmug
   form.username = $username
   form.password = $password
   page = $agent.submit form
-  # Now our agent is authenticated with SmugMug
-  
+  # Now our agent is authenticated with SmugMug so we can get the photos with $agent
   
   # Login with Smirk as an API
   $smug = Smirk::Client.new($username, $password)
@@ -128,7 +127,7 @@ end
 def output_help
   puts "username, password, and destination are mandatory parameters"
   puts "e.g. "
-  puts "./smugmug_sync.rb --username YOUR_USERNAME --password YOUR_PASSWORD --destination DIRECTORY"
+  puts "      smugmug_sync --username "YOUR_USERNAME" --password "YOUR_PASSWORD" --destination "DIRECTORY""
 end
 
 # =======================================================================================
