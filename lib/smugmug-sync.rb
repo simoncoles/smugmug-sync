@@ -105,16 +105,6 @@ def sync_album(album, destination)
 
   puts "Working on Album [#{title}] in Category [#{category}]" if $verbose
 
-  # Now get all the images and process them
-  # Note we pass true in as the "heavy" parameter which gets the full object, rather than just the id and key
-  images = album.images(true)
-  images.each do |i|
-    sync_image_file(i, album_directory)
-  end
-end
-
-
-def sync_with_smugmug
   # Login with Mechanize to download photos
   $agent = Mechanize.new
   page = $agent.get 'https://secure.smugmug.com/login.mg'
@@ -123,6 +113,20 @@ def sync_with_smugmug
   form.password = $password
   page = $agent.submit form
   # Now our agent is authenticated with SmugMug so we can get the photos with $agent
+
+  # Now get all the images and process them
+  # Note we pass true in as the "heavy" parameter which gets the full object, rather than just the id and key
+  images = album.images(true)
+  images.each do |i|
+    sync_image_file(i, album_directory)
+  end
+  
+  # And close the Mechanize agent - I think this might leak memory
+  $agent = nil
+end
+
+
+def sync_with_smugmug
 
   puts "About to try logging in #{$username} #{$password}"
   # Login with Smirk as an API
