@@ -44,7 +44,7 @@ def sync_image_file(image, album_directory)
 
   image_metadata = {:md5sum => md5sum, :caption => caption, :keywords => keywords, :exif => exif_data}
 
-  image_filename = "#{album_directory}/#{filename}"
+  image_filename = "#{album_directory}/#{filename}.jpg"
   metadata_filename = "#{album_directory}/#{filename}.yml"
 
   # Start of with the presumption that we need to download it
@@ -62,10 +62,6 @@ def sync_image_file(image, album_directory)
   # This is where we download if needed
   if download_it
     # We didn't have the file, so write things out
-    # First dump the metadata
-    File.open(metadata_filename, 'w') do |out|
-      YAML::dump(image_metadata, out)
-    end
 
     begin 
       f = $agent.get(url)
@@ -82,6 +78,12 @@ def sync_image_file(image, album_directory)
       else
         puts "Could not get correct md5sum from file downloaded from #{url}"
       end
+      
+      # IFwe maanged to get he file then dump the metadata
+      File.open(metadata_filename, 'w') do |out|
+        YAML::dump(image_metadata, out)
+      end
+      
     rescue
       puts "Error getting the image file #{url}"
     end
@@ -96,7 +98,9 @@ def sync_album(album, destination)
   category_directory = "#{destination}/#{category}"
   album_directory = "#{category_directory}/#{title}"
   # Create the Directories if needed
+  puts "Working on category_directory = #{category_directory}"
   Dir.mkdir(category_directory) if !File.exists?(category_directory)
+  puts "Working on album_directory = #{album_directory}"
   Dir.mkdir(album_directory) if !File.exists?(album_directory)
 
   puts "Working on Album [#{title}] in Category [#{category}]" if $verbose
@@ -120,6 +124,7 @@ def sync_with_smugmug
   page = $agent.submit form
   # Now our agent is authenticated with SmugMug so we can get the photos with $agent
 
+  puts "About to try logging in #{$username} #{$password}"
   # Login with Smirk as an API
   $smug = Smirk::Client.new($username, $password)
   albums = $smug.albums
